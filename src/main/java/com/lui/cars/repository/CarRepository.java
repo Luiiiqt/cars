@@ -1,7 +1,7 @@
-package com.lui.cars;
+package com.lui.cars.repository;
 
+import com.lui.cars.model.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 public interface CarRepository extends JpaRepository<Car, Integer>{
 }

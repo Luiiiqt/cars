@@ -1,111 +1,81 @@
-/* Reset some basics */
+/* Basic Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    background: #f7f7f7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
     color: #333;
     padding: 20px;
+    line-height: 1.6;
 }
 
 main {
     max-width: 1200px;
-    margin: auto;
-    background: #fff;
-    padding: 20px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Top bar with title, search, and button */
 .top-bar {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 10px;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
 .top-bar h1 {
-    font-size: 1.8rem;
-    color: #222;
+    font-size: 32px;
+    color: #333;
+    font-weight: 600;
+    margin: 0;
 }
 
-/* Search form */
-.search-form {
-    display: flex;
-    gap: 8px;
-}
-
-.search-form input {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    outline: none;
-    transition: border 0.2s;
-}
-
-.search-form input:focus {
-    border-color: #007bff;
-}
-
-.search-form button {
-    padding: 8px 16px;
-    border: none;
-    background: #007bff;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.search-form button:hover {
-    background: #0056b3;
-}
-
-/* Buttons */
 .btn {
-    padding: 8px 16px;
-    border-radius: 6px;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
     text-decoration: none;
-    font-size: 0.9rem;
-    transition: 0.2s;
+    border-radius: 6px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: 500;
 }
 
 .add-btn {
-    background: #28a745;
+    background-color: #4CAF50;
     color: white;
 }
 
 .add-btn:hover {
-    background: #1e7e34;
+    background-color: #45a049;
+    transform: translateY(-2px);
 }
 
 .edit {
-    background: #ffc107;
-    color: #333;
-    margin-right: 6px;
+    background-color: #FFA500;
+    color: white;
 }
 
 .edit:hover {
-    background: #e0a800;
+    background-color: #e68900;
+    transform: translateY(-2px);
 }
 
 .delete {
-    background: #dc3545;
+    background-color: #FF6347;
     color: white;
 }
 
 .delete:hover {
-    background: #c82333;
+    background-color: #e55340;
+    transform: translateY(-2px);
 }
 
-/* Table */
 .table-container {
     overflow-x: auto;
 }
@@ -113,29 +83,142 @@ main {
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
+    text-align: left;
+    font-size: 16px;
+}
+
+th, td {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f8f8;
+    color: #555;
+    font-weight: 600;
+}
+
+td {
+    background-color: #fff;
+    color: #333;
+}
+
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+tr:hover td {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+td a {
+    margin-right: 10px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+td a:hover {
+    background-color: #f1f1f1;
+    color: #4CAF50;
+}
+
+tr td[colspan="10"] {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    main {
+        padding: 15px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .top-bar h1 {
+        margin-bottom: 10px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+}
+
+/* Form Styles (if this file is used with form) */
+form {
+    margin-top: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: block;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+form input,
+form select,
+form button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+form input:focus,
+form select:focus,
+form button:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+}
+
+form button {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+form button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+form a {
+    display: inline-block;
+    font-size: 14px;
+    color: #777;
+    text-decoration: none;
+    text-align: center;
     margin-top: 10px;
 }
 
-thead {
-    background: #007bff;
-    color: white;
-}
-
-thead th {
-    padding: 12px;
-    text-align: left;
-    font-weight: normal;
-}
-
-tbody td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-tbody tr:nth-child(even) {
-    background: #f9f9f9;
-}
-
-tbody tr:hover {
-    background: #f1f1f1;
+form a:hover {
+    color: #4CAF50;
 }
