@@ -2,8 +2,8 @@ package com.lui.cars.controller;
 
 import com.lui.cars.dto.CarDTO;
 import com.lui.cars.exception.ResourceNotFoundException;
-import com.lui.cars.repository.CarRepository;
 import com.lui.cars.model.Car;
+import com.lui.cars.repository.CarRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ public class CarController {
 
     private final CarRepository carRepository;
 
-    // Constructor injection of CarRepository
+    // Constructor injection
     public CarController(CarRepository carRepository) {
         this.carRepository = carRepository;
     }
@@ -28,30 +28,30 @@ public class CarController {
         List<Car> cars = carRepository.findAll();
         model.addAttribute("cars", cars);
 
-        // Log car makes to console (like in your reference code)
-        cars.forEach(car -> System.out.println(car.getMake()));
+        // Debug log
+        cars.forEach(car -> System.out.println("Car: " + car.getMake()));
 
-        return "index"; // index.html template
+        return "index"; // index.html
     }
 
-    // Show form to create a new car
+    // Show form to create new car
     @GetMapping("/create")
     public String create(Model model) {
-        model.addAttribute("car", new CarDTO()); // Using CarDTO for creation
-        return "create"; // create.html template
+        model.addAttribute("car", new CarDTO()); // bind DTO
+        return "create"; // create.html
     }
 
-    // Process form to save new car
+    // Process creation
     @PostMapping("/save")
-    public String save(
-            @ModelAttribute("car") @Valid CarDTO carDTO, BindingResult result, Model model) {
+    public String save(@ModelAttribute("car") @Valid CarDTO carDTO,
+                       BindingResult result,
+                       Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("car", carDTO);
-            return "create"; // return to create form if validation fails
+            return "create";
         }
 
-        // Convert CarDTO to Car model and save to repository
         Car newCar = new Car();
         newCar.setMake(carDTO.getMake());
         newCar.setModel(carDTO.getModel());
@@ -62,52 +62,82 @@ public class CarController {
         newCar.setEngineType(carDTO.getEngineType());
         newCar.setTransmission(carDTO.getTransmission());
 
-        carRepository.save(newCar); // Save the car object to the database
+        carRepository.save(newCar);
 
-        return "redirect:/"; // Redirect to the home page
-    }
-
-    // Show details of a specific car
-    @GetMapping("/show")
-    public String show(@RequestParam int id, Model model) {
-        Car car = carRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Car", id));
-
-        model.addAttribute("car", car); // Add car details to the model
-        return "show"; // show.html template to display car details
-    }
-
-    // Show form to edit an existing car
-    @GetMapping("/edit")
-    public String edit(@RequestParam int id, Model model) {
-        Car car = carRepository.findById(id).orElse(null);
-        if (car == null) {
-            model.addAttribute("error", "Car not found");
-            return "error"; // error.html template if car not found
-        }
-        model.addAttribute("car", car);
-        return "edit"; // edit.html template
-    }
-
-    // Process form to update car
-    @PostMapping("/update")
-    public String update(@ModelAttribute Car car) {
-        carRepository.save(car); // save() updates if ID exists
         return "redirect:/";
     }
 
-    // Delete car by ID
+    // Show details of a car
+    @GetMapping("/show")
+    public String show(@RequestParam int id, Model model) {
+        Car car = carRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Car", id));
+
+        model.addAttribute("car", car);
+        return "show"; // show.html
+    }
+
+    // Show form to edit existing car
+    @GetMapping("/edit")
+    public String edit(@RequestParam int id, Model model) {
+        Car car = carRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Car", id));
+
+        // Pre-fill DTO for form
+        CarDTO carDTO = new CarDTO();
+        carDTO.setId(car.getId());
+        carDTO.setMake(car.getMake());
+        carDTO.setModel(car.getModel());
+        carDTO.setYear(car.getYear());
+        carDTO.setColor(car.getColor());
+        carDTO.setLicensePlateNumber(car.getLicensePlateNumber());
+        carDTO.setBodyType(car.getBodyType());
+        carDTO.setEngineType(car.getEngineType());
+        carDTO.setTransmission(car.getTransmission());
+
+        model.addAttribute("car", carDTO);
+        model.addAttribute("id", id); // keep id for hidden field
+        return "edit";
+    }
+
+    // Process update
+    @PostMapping("/update")
+    public String update(@ModelAttribute("car") @Valid CarDTO carDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return "edit";
+        }
+
+        Car car = carRepository.findById(carDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Car", carDTO.getId()));
+
+        car.setLicensePlateNumber(carDTO.getLicensePlateNumber());
+        car.setMake(carDTO.getMake());
+        car.setModel(carDTO.getModel());
+        car.setYear(carDTO.getYear());
+        car.setColor(carDTO.getColor());
+        car.setBodyType(carDTO.getBodyType());
+        car.setEngineType(carDTO.getEngineType());
+        car.setTransmission(carDTO.getTransmission());
+
+        carRepository.save(car); // ✅ updates instead of creating new
+        return "redirect:/";
+    }
+
+
+    // Delete car
     @GetMapping("/delete")
     public String delete(@RequestParam int id) {
         carRepository.deleteById(id);
         return "redirect:/";
     }
 
+    // View details (same as show, but can be different page)
     @GetMapping("/view")
     public String view(@RequestParam int id, Model model) {
         Car car = carRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Car", id));
 
-        model.addAttribute("car", car); // Add car to model for view page
-        return "view"; // view.html template to show car details
+        model.addAttribute("car", car);
+        return "view"; // view.html
     }
 }

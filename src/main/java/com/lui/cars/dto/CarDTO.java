@@ -4,33 +4,39 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 public class CarDTO {
+    private int id;
+
     @NotBlank(message = "Make is required")
     private String make;
 
-    @NotBlank
+    @NotBlank(message = "Model is required")
     private String model;
+
 
     @Min(1900)
     @Max(2025)
     private int year;
 
-    @NotBlank
+    @NotBlank(message = "Color is Required")
     private String color;
 
-    @NotBlank
+    @NotBlank(message = "License Plate is Required")
     private String licensePlateNumber;
 
-    @NotBlank
     private String bodyType;
-
-    @NotBlank
     private String engineType;
-
-    @NotBlank
     private String transmission;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getMake() {
         return make;

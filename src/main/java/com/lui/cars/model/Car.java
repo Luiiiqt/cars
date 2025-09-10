@@ -19,52 +19,8 @@ public class Car {
     private String engineType;
     private String transmission;
 
-    // Default constructor (needed by JPA)
-    public Car() {
-    }
-
-    // Constructor with all fields (including ID)
-    public Car(int id, String licensePlateNumber, String make, String model, int year,
-               String color, String bodyType, String engineType, String transmission) {
-        this.id = id;
-        this.licensePlateNumber = licensePlateNumber;
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.color = color;
-        this.bodyType = bodyType;
-        this.engineType = engineType;
-        this.transmission = transmission;
-    }
-
-    // Constructor without ID (useful for inserts)
-    public Car(String licensePlateNumber, String make, String model, int year,
-               String color, String bodyType, String engineType, String transmission) {
-        this.licensePlateNumber = licensePlateNumber;
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.color = color;
-        this.bodyType = bodyType;
-        this.engineType = engineType;
-        this.transmission = transmission;
-    }
-
-    // Getters and Setters
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLicensePlateNumber() {
-        return licensePlateNumber;
-    }
-
-    public void setLicensePlateNumber(String licensePlateNumber) {
-        this.licensePlateNumber = licensePlateNumber;
     }
 
     public String getMake() {
@@ -99,6 +55,14 @@ public class Car {
         this.color = color;
     }
 
+    public String getLicensePlateNumber() {
+        return licensePlateNumber;
+    }
+
+    public void setLicensePlateNumber(String licensePlateNumber) {
+        this.licensePlateNumber = licensePlateNumber;
+    }
+
     public String getBodyType() {
         return bodyType;
     }
@@ -121,20 +85,5 @@ public class Car {
 
     public void setTransmission(String transmission) {
         this.transmission = transmission;
-    }
-
-    @Override
-    public String toString() {
-        return "Car{" +
-                "id=" + id +
-                ", licensePlateNumber='" + licensePlateNumber + '\'' +
-                ", make='" + make + '\'' +
-                ", model='" + model + '\'' +
-                ", year=" + year +
-                ", color='" + color + '\'' +
-                ", bodyType='" + bodyType + '\'' +
-                ", engineType='" + engineType + '\'' +
-                ", transmission='" + transmission + '\'' +
-                '}';
     }
 }
