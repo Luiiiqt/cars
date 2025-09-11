@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public String handleGenericException(Exception ex, Model model) {
-        model.addAttribute("message", "We can't find what you're looking for " + ex.getMessage());
+        model.addAttribute("message", "Unfortunately we can't find what you're looking for");
         return "error/error";
     }
 }

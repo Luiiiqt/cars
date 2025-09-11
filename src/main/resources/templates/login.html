@@ -4,112 +4,139 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <style>
-        /* Reset and base styles */
-        * {
+        /* === Reset and Base === */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Body Styling */
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0;
-            margin: 0;
+            padding: 1rem;
+            color: #333;
         }
 
-        /* Form Container Styling */
+        /* === Form Container === */
         form {
-            background-color: rgba(255, 255, 255, 0.9);  /* Slightly more opaque for better readability */
-            backdrop-filter: blur(12px);  /* Softer blur */
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);  /* Softer, larger shadow */
-            padding: 40px 30px;
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem 2rem;
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
             text-align: center;
-            transition: transform 0.3s ease-out;
+            animation: fadeIn 0.6s ease-out;
+            transition: transform 0.3s ease;
         }
 
         form:hover {
-            transform: translateY(-5px);  /* Slight hover effect on form container */
+            transform: translateY(-5px);
         }
 
-        /* Form Heading */
         form h2 {
-            font-size: 26px;
+            font-size: 1.75rem;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
+            color: #2c2c2c;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
         }
 
-        /* Form Field Styling */
+        /* === Input Groups === */
         form div {
-            margin-bottom: 25px;
-        }
-
-        /* Labels for inputs */
-        label {
-            font-size: 14px;
-            color: #333;
-            font-weight: 500;
-            display: block;
-            margin-bottom: 8px;
+            margin-bottom: 1.5rem;
             text-align: left;
         }
 
-        /* Input Fields Styling */
-        input[type="text"], input[type="password"] {
+        label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        input[type="text"],
+        input[type="password"] {
             width: 100%;
-            padding: 14px 16px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            outline: none;
-            box-sizing: border-box;
-            background-color: #f8f8f8;
-            color: #333;
-            transition: border 0.3s ease, box-shadow 0.3s ease;
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            background-color: #fafafa;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        input[type="text"]:focus, input[type="password"]:focus {
+        input[type="text"]:focus,
+        input[type="password"]:focus {
             border-color: #6c63ff;
-            box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);  /* Subtle glow effect on focus */
+            box-shadow: 0 0 10px rgba(108, 99, 255, 0.25);
+            outline: none;
         }
 
-        /* Submit Button Styling */
+        /* === Button === */
         button {
             width: 100%;
-            padding: 15px;
+            padding: 0.9rem;
             background-color: #6c63ff;
             color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 600;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         button:hover {
             background-color: #5a52e3;
-            transform: translateY(-2px);  /* Slight hover animation */
+            transform: translateY(-2px);
         }
 
-        /* Register Link Styling */
+        button:focus {
+            outline: 3px solid #6c63ff;
+            outline-offset: 2px;
+        }
+
+        /* === Feedback Messages === */
+        div[th\\:if] {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 0.4rem;
+        }
+
+        div[th\\:if]:nth-of-type(1) {
+            color: #d93025;
+            background-color: #ffe6e6;
+        }
+
+        div[th\\:if]:nth-of-type(2) {
+            color: #0f9d58;
+            background-color: #e6fff3;
+        }
+
+        /* === Link === */
         a {
             display: block;
-            margin-top: 20px;
+            margin-top: 1.5rem;
             color: #6c63ff;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 0.95rem;
             font-weight: 500;
             transition: color 0.3s ease;
         }
@@ -119,13 +146,7 @@
             text-decoration: underline;
         }
 
-        /* Focus styles for accessibility */
-        input:focus, button:focus {
-            outline: 3px solid #6c63ff;
-            outline-offset: 3px;
-        }
-
-        /* Loading animation */
+        /* === Animation === */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -137,64 +158,60 @@
             }
         }
 
-        form {
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        /* Responsive design */
-        @media (max-width: 1200px) {
-            form {
-                padding: 35px 25px;
-            }
-
-            button {
-                padding: 14px;
-                font-size: 15px;
-            }
-        }
-
+        /* === Responsive === */
         @media (max-width: 768px) {
             form {
-                padding: 30px 20px;
+                padding: 2rem 1.5rem;
             }
 
+            input[type="text"],
+            input[type="password"],
             button {
-                padding: 12px;
-                font-size: 14px;
+                font-size: 0.95rem;
             }
 
             label {
-                font-size: 13px;
+                font-size: 0.9rem;
+            }
+
+            a {
+                font-size: 0.9rem;
             }
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 480px) {
             form {
-                padding: 25px 15px;
+                padding: 1.75rem 1rem;
             }
 
             button {
-                padding: 12px;
-                font-size: 13px;
+                padding: 0.85rem;
+                font-size: 0.9rem;
             }
 
             label {
-                font-size: 12px;
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.85rem;
             }
         }
 
-        /* Reduced motion support */
+        /* === Accessibility: Reduced Motion === */
         @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
             }
         }
     </style>
 </head>
-<body>
 <form th:action="@{/login}" method="post">
+    <body>
+    <div th:if="${param.logout}">
+        You have been logged out
+    </div>
     <div>
         <label>Username:</label>
         <input type="text" name="username"/>
@@ -203,19 +220,11 @@
         <label>Password:</label>
         <input type="password" name="password"/>
     </div>
+    <div th:if="${param.error}">
+        Invalid username or password
+    </div>
     <button type="submit">Login</button>
+    <a th:href="@{/register}">Don't have an account? Register Here.</a>
 </form>
-
-<!-- show error message if login fails -->
-<div th:if="${param.error}">
-    Invalid username or password
-</div>
-
-<!-- show message after logout -->
-<div th:if="${param.logout}">
-    You have been logged out
-</div>
-
-<a th:href="@{/register}">Register Here.</a>
 </body>
 </html>

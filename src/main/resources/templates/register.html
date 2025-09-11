@@ -4,99 +4,207 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <style>
-        /* Basic Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        /* === Reset and Base === */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* Body Styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
 
-/* Form Container Styling */
-form {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            color: #333;
+        }
 
-/* Form Heading (optional) */
-form h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
-}
+        /* === Form Container === */
+        form {
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+            transition: transform 0.3s ease;
+        }
 
-/* Form Field Styling */
-form div {
-    margin-bottom: 20px;
-}
+        form:hover {
+            transform: translateY(-5px);
+        }
 
-label {
-    font-size: 14px;
-    color: #555;
-    display: block;
-    margin-bottom: 8px;
-}
+        form h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #2c2c2c;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+        }
 
-/* Input Fields Styling */
-input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    outline: none;
-    box-sizing: border-box;
-}
+        /* === Input Groups === */
+        form div {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
 
-input[type="text"]:focus, input[type="password"]:focus {
-    border-color: #007BFF;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
+        label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
 
-/* Submit Button Styling */
-button {
-    width: 100%;
-    padding: 14px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            background-color: #fafafa;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 10px rgba(108, 99, 255, 0.25);
+            outline: none;
+        }
 
-/* Register Link Styling */
-a {
-    display: block;
-    margin-top: 15px;
-    color: #007BFF;
-    text-decoration: none;
-    font-size: 14px;
-}
+        /* === Button === */
+        button {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: #6c63ff;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-a:hover {
-    text-decoration: underline;
-}
+        button:hover {
+            background-color: #5a52e3;
+            transform: translateY(-2px);
+        }
+
+        button:focus {
+            outline: 3px solid #6c63ff;
+            outline-offset: 2px;
+        }
+
+        /* === Feedback Messages === */
+        div[th\\:if] {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 0.4rem;
+        }
+
+        div[th\\:if]:nth-of-type(1) {
+            color: #d93025;
+            background-color: #ffe6e6;
+        }
+
+        div[th\\:if]:nth-of-type(2) {
+            color: #0f9d58;
+            background-color: #e6fff3;
+        }
+
+        /* === Link === */
+        a {
+            display: block;
+            margin-top: 1.5rem;
+            color: #6c63ff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #4a43d4;
+            text-decoration: underline;
+        }
+
+        /* === Animation === */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* === Responsive === */
+        @media (max-width: 768px) {
+            form {
+                padding: 2rem 1.5rem;
+            }
+
+            input[type="text"],
+            input[type="password"],
+            button {
+                font-size: 0.95rem;
+            }
+
+            label {
+                font-size: 0.9rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            form {
+                padding: 1.75rem 1rem;
+            }
+
+            button {
+                padding: 0.85rem;
+                font-size: 0.9rem;
+            }
+
+            label {
+                font-size: 0.85rem;
+            }
+
+            a {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* === Accessibility: Reduced Motion === */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -110,7 +218,7 @@ a:hover {
         <input type="password" name="password"/>
     </div>
     <button type="submit">Register</button>
+    <a th:href="@{/login}">Already have an account? Login Here.</a>
 </form>
-<a th:href="@{/login}">Login Here.</a>
 </body>
 </html>
