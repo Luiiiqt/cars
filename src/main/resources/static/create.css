@@ -1,0 +1,141 @@
+/* Base Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    color: #333;
+}
+
+/* Form Styling */
+form {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 40px 30px;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Headline */
+form h1 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #2c2c2c;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+}
+
+/* Inputs and Selects */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 6px rgba(108, 99, 255, 0.2);
+    outline: none;
+}
+
+/* 🔴 Validation: Error Input Highlight */
+input:invalid, select:invalid {
+    border-color: #e53935;
+}
+
+/* 🔴 Validation: Error Message Styling */
+div[th\\:if] {
+    color: #e53935;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: -10px;
+    margin-bottom: 12px;
+    display: block;
+    line-height: 1.3;
+}
+
+/* Button Styles */
+button {
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #5a52e3;
+    transform: translateY(-2px);
+}
+
+/* Cancel Link */
+a[href="/"] {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #6c63ff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+a[href="/"]:hover {
+    color: #4a43d4;
+    text-decoration: underline;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    form {
+        padding: 30px 20px;
+    }
+
+    button {
+        font-size: 15px;
+        padding: 12px;
+    }
+}
