@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class CarController {
+public class HomeController {
 
     private final CarService carService;
     CarRepository carRepository;
 
     // Constructor injection
-    public CarController(CarService carService, CarRepository carRepository) {
+    public HomeController(CarService carService, CarRepository carRepository) {
         this.carService = carService;
         this.carRepository = carRepository;
     }
