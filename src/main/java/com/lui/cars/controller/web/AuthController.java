@@ -1,4 +1,4 @@
-package com.lui.cars.controller;
+package com.lui.cars.controller.web;
 
 import com.lui.cars.service.UserService;
 import jakarta.servlet.http.HttpSession;

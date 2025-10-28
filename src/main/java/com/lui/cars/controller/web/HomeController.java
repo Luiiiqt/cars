@@ -1,4 +1,4 @@
-package com.lui.cars.controller;
+package com.lui.cars.controller.web;
 
 import com.lui.cars.dto.CarDTO;
 import com.lui.cars.exception.ResourceNotFoundException;

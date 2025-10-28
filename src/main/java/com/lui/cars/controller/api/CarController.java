@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class CarController {
@@ -38,7 +39,6 @@ public class CarController {
         }
         return carService.updateCar(updateCar, car);
     }
-
 
     @DeleteMapping("/cars/{id}")
     public void deleteCar(@PathVariable int id) {
