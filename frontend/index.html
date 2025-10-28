@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Car Inventory</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center p-8">
+
+  <!-- LOGIN SECTION -->
+  <div id="loginSection" class="mt-10 glass w-80 mx-auto p-6 rounded-xl text-center">
+    <h2 class="text-cyan-400 mb-4 text-xl font-bold">Login</h2>
+    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-2 rounded-md" type="text" id="username" placeholder="Username">
+    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-4 rounded-md" type="password" id="password" placeholder="Password">
+    <button class="neon-btn px-4 py-2 rounded-md w-full" id="loginBtn">Login</button>
+
+    <p class="text-sm text-gray-400">Don't have an account?
+      <button onclick="toggleRegister()" class="text-cyan-400 underline">Register</button>
+    </p>
+  </div>
+
+  <!-- REGISTER SECTION -->
+  <div id="registerSection" class="hidden mt-10 glass w-80 mx-auto p-6 rounded-xl text-center">
+    <h2 class="text-cyan-400 mb-4 text-xl font-bold">Register</h2>
+    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-2 rounded-md" type="text" id="regUsername" placeholder="Username" required>
+    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-2 rounded-md" type="password" id="regPassword" placeholder="Password" required>
+    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-4 rounded-md" type="password" id="confirmPassword" placeholder="Confirm Password" required>
+    <button class="neon-btn px-4 py-2 rounded-md w-full mb-3" id="registerBtn">Register</button>
+
+    <p class="text-sm text-gray-400">Already have an account?
+      <button onclick="toggleLogin()" class="text-cyan-400 underline">Login</button>
+    </p>
+  </div>
+
+  <!-- CRUD SECTION -->
+  <div id="crudSection" class="hidden w-full max-w-5xl bg-white shadow-md rounded-lg p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl text-cyan-400 font-bold">Car Management</h1>
+      <div class="flex gap-2">
+        <button onclick="openCreateModal()" class="neon-btn px-4 py-2 rounded-md">Add New Car</button>
+        <button onclick="logout()" class="bg-gray-700 px-4 py-2 rounded-md text-white hover:bg-gray-800">Logout</button>
+      </div>
+    </div>
+
+    <table class="w-full border-collapse">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="p-2 border">ID</th>
+          <th class="p-2 border">License Plate</th>
+          <th class="p-2 border">Make</th>
+          <th class="p-2 border">Model</th>
+          <th class="p-2 border">Year</th>
+          <th class="p-2 border">Color</th>
+          <th class="p-2 border">Body Type</th>
+          <th class="p-2 border">Engine Type</th>
+          <th class="p-2 border">Transmission</th>
+          <th class="p-2 border">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="carTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- MODAL -->
+  <div id="carModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+    <div class="bg-white rounded-lg w-96 p-6">
+      <h2 id="modalTitle" class="text-xl font-semibold mb-4"></h2>
+      <form id="carForm" onsubmit="saveCar(event)">
+        <input type="hidden" id="carId">
+        <div class="mb-2">
+          <label class="block text-gray-700">License Plate</label>
+          <input id="carLicensePlateNumber" class="border p-2 w-full rounded" required>
+        </div>
+        <div class="mb-2">
+          <label class="block text-gray-700">Make</label>
+          <input id="carMake" class="border p-2 w-full rounded" required>
+        </div>
+        <div class="mb-2">
+          <label class="block text-gray-700">Model</label>
+          <input id="carModel" class="border p-2 w-full rounded" required>
+        </div>
+        <div class="mb-2">
+          <label class="block text-gray-700">Year</label>
+          <input id="carYear" type="number" class="border p-2 w-full rounded" required>
+        </div>
+        <div class="mb-2">
+          <label class="block text-gray-700">Color</label>
+          <input id="carColor" class="border p-2 w-full rounded" required>
+        </div>
+        <div class="mb-2">
+          <label class="block text-gray-700">Body Type</label>
+          <input id="carBodyType" class="border p-2 w-full rounded" required>
+        </div>
+        <div class="mb-2">
+          <label class="block text-gray-700">Engine Type</label>
+          <input id="carEngineType" class="border p-2 w-full rounded" required>
+        </div>
+        <div class="mb-2">
+          <label class="block text-gray-700">Transmission</label>
+          <input id="carTransmission" class="border p-2 w-full rounded" required>
+        </div>
+        <div class="flex justify-end mt-4 space-x-2">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
