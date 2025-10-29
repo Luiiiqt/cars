@@ -1,112 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Car Inventory</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 min-h-screen flex flex-col items-center p-8">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Car Inventory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
 
-  <!-- LOGIN SECTION -->
-  <div id="loginSection" class="mt-10 glass w-80 mx-auto p-6 rounded-xl text-center">
-    <h2 class="text-cyan-400 mb-4 text-xl font-bold">Login</h2>
-    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-2 rounded-md" type="text" id="username" placeholder="Username">
-    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-4 rounded-md" type="password" id="password" placeholder="Password">
-    <button class="neon-btn px-4 py-2 rounded-md w-full" id="loginBtn">Login</button>
+  <body class="bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-8">
+    <div id="root" class="w-full flex justify-center items-center"></div>
 
-    <p class="text-sm text-gray-400">Don't have an account?
-      <button onclick="toggleRegister()" class="text-cyan-400 underline">Register</button>
-    </p>
-  </div>
+    <script type="text/babel">
+      const apiBase = "http://localhost:2121/api/cars";
+      const loginUrl = "http://localhost:2121/api/auth/login";
+      const registerUrl = "http://localhost:2121/api/auth/register";
 
-  <!-- REGISTER SECTION -->
-  <div id="registerSection" class="hidden mt-10 glass w-80 mx-auto p-6 rounded-xl text-center">
-    <h2 class="text-cyan-400 mb-4 text-xl font-bold">Register</h2>
-    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-2 rounded-md" type="text" id="regUsername" placeholder="Username" required>
-    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-2 rounded-md" type="password" id="regPassword" placeholder="Password" required>
-    <input class="w-full bg-transparent border border-cyan-500 p-2 mb-4 rounded-md" type="password" id="confirmPassword" placeholder="Confirm Password" required>
-    <button class="neon-btn px-4 py-2 rounded-md w-full mb-3" id="registerBtn">Register</button>
+      function App() {
+        const [cars, setCars] = React.useState([]);
+        const [showModal, setShowModal] = React.useState(false);
+        const [token, setToken] = React.useState(localStorage.getItem("token") || "");
+        const [editingCar, setEditingCar] = React.useState(null);
+        const [form, setForm] = React.useState({
+          licensePlateNumber: "",
+          make: "",
+          model: "",
+          year: "",
+          color: "",
+          bodyType: "",
+          engineType: "",
+          transmission: ""
+        });
 
-    <p class="text-sm text-gray-400">Already have an account?
-      <button onclick="toggleLogin()" class="text-cyan-400 underline">Login</button>
-    </p>
-  </div>
+        const [loginForm, setLoginForm] = React.useState({ username: "", password: "" });
+        const [registerForm, setRegisterForm] = React.useState({ username: "", password: "" });
+        const [showRegister, setShowRegister] = React.useState(false);
 
-  <!-- CRUD SECTION -->
-  <div id="crudSection" class="hidden w-full max-w-5xl bg-white shadow-md rounded-lg p-6">
-    <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl text-cyan-400 font-bold">Car Management</h1>
-      <div class="flex gap-2">
-        <button onclick="openCreateModal()" class="neon-btn px-4 py-2 rounded-md">Add New Car</button>
-        <button onclick="logout()" class="bg-gray-700 px-4 py-2 rounded-md text-white hover:bg-gray-800">Logout</button>
-      </div>
-    </div>
+        React.useEffect(() => {
+          if (token) fetchCars();
+        }, [token]);
 
-    <table class="w-full border-collapse">
-      <thead class="bg-gray-200">
-        <tr>
-          <th class="p-2 border">ID</th>
-          <th class="p-2 border">License Plate</th>
-          <th class="p-2 border">Make</th>
-          <th class="p-2 border">Model</th>
-          <th class="p-2 border">Year</th>
-          <th class="p-2 border">Color</th>
-          <th class="p-2 border">Body Type</th>
-          <th class="p-2 border">Engine Type</th>
-          <th class="p-2 border">Transmission</th>
-          <th class="p-2 border">Actions</th>
-        </tr>
-      </thead>
-      <tbody id="carTableBody"></tbody>
-    </table>
-  </div>
+        function fetchCars() {
+          fetch(apiBase, { headers: { Authorization: `Bearer ${token}` } })
+            .then(res => res.json())
+            .then(setCars)
+            .catch(console.error);
+        }
 
-  <!-- MODAL -->
-  <div id="carModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-    <div class="bg-white rounded-lg w-96 p-6">
-      <h2 id="modalTitle" class="text-xl font-semibold mb-4"></h2>
-      <form id="carForm" onsubmit="saveCar(event)">
-        <input type="hidden" id="carId">
-        <div class="mb-2">
-          <label class="block text-gray-700">License Plate</label>
-          <input id="carLicensePlateNumber" class="border p-2 w-full rounded" required>
-        </div>
-        <div class="mb-2">
-          <label class="block text-gray-700">Make</label>
-          <input id="carMake" class="border p-2 w-full rounded" required>
-        </div>
-        <div class="mb-2">
-          <label class="block text-gray-700">Model</label>
-          <input id="carModel" class="border p-2 w-full rounded" required>
-        </div>
-        <div class="mb-2">
-          <label class="block text-gray-700">Year</label>
-          <input id="carYear" type="number" class="border p-2 w-full rounded" required>
-        </div>
-        <div class="mb-2">
-          <label class="block text-gray-700">Color</label>
-          <input id="carColor" class="border p-2 w-full rounded" required>
-        </div>
-        <div class="mb-2">
-          <label class="block text-gray-700">Body Type</label>
-          <input id="carBodyType" class="border p-2 w-full rounded" required>
-        </div>
-        <div class="mb-2">
-          <label class="block text-gray-700">Engine Type</label>
-          <input id="carEngineType" class="border p-2 w-full rounded" required>
-        </div>
-        <div class="mb-2">
-          <label class="block text-gray-700">Transmission</label>
-          <input id="carTransmission" class="border p-2 w-full rounded" required>
-        </div>
-        <div class="flex justify-end mt-4 space-x-2">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
-        </div>
-      </form>
-    </div>
-  </div>
+        function openCreateModal() {
+          setEditingCar(null);
+          setForm({
+            licensePlateNumber: "",
+            make: "",
+            model: "",
+            year: "",
+            color: "",
+            bodyType: "",
+            engineType: "",
+            transmission: ""
+          });
+          setShowModal(true);
+        }
 
-  <script src="js/main.js"></script>
-</body>
+        function openEditModal(car) {
+          setEditingCar(car);
+          setForm({
+            licensePlateNumber: car.licensePlateNumber,
+            make: car.make,
+            model: car.model,
+            year: car.year,
+            color: car.color,
+            bodyType: car.bodyType,
+            engineType: car.engineType,
+            transmission: car.transmission
+          });
+          setShowModal(true);
+        }
+
+        function closeModal() {
+          setShowModal(false);
+        }
+
+        function handleChange(e) {
+          const { id, value } = e.target;
+          setForm(prev => ({ ...prev, [id]: value }));
+        }
+
+        function handleLoginChange(e) {
+          const { id, value } = e.target;
+          setLoginForm(prev => ({ ...prev, [id]: value }));
+        }
+
+        function handleRegisterChange(e) {
+          const { id, value } = e.target;
+          setRegisterForm(prev => ({ ...prev, [id]: value }));
+        }
+
+        function saveCar(e) {
+          e.preventDefault();
+          const method = editingCar ? "PUT" : "POST";
+          const url = editingCar ? `${apiBase}/${editingCar.id}` : apiBase;
+
+          fetch(url, {
+            method,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(form)
+          })
+            .then(res => res.json())
+            .then(() => {
+              closeModal();
+              fetchCars();
+            })
+            .catch(console.error);
+        }
+
+        function deleteCar(id) {
+          if (!confirm("Delete this car?")) return;
+          fetch(`${apiBase}/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` }
+          })
+            .then(() => fetchCars())
+            .catch(console.error);
+        }
+
+        function loginUser(e) {
+          e.preventDefault();
+          fetch(loginUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(loginForm)
+          })
+            .then(res => {
+              if (!res.ok) throw new Error("Invalid credentials");
+              return res.json();
+            })
+            .then(data => {
+              localStorage.setItem("token", data.token);
+              setToken(data.token);
+              fetchCars();
+            })
+            .catch(() => alert("Login failed. Please check your credentials."));
+        }
+
+        function registerUser(e) {
+          e.preventDefault();
+          fetch(registerUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(registerForm)
+          })
+            .then(res => {
+              if (!res.ok) throw new Error("Registration failed");
+              return res.json();
+            })
+            .then(() => {
+              alert("Registration successful! Please log in.");
+              setShowRegister(false);
+            })
+            .catch(() => alert("Registration failed. Try again."));
+        }
+
+        function logout() {
+          localStorage.removeItem("token");
+          setToken("");
+          setCars([]);
+        }
+
+        // ============ LOGIN PAGE ============
+        if (!token) {
+          return (
+            <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+              <div className="bg-white rounded-2xl shadow-2xl w-[28rem] p-10 relative">
+                <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">
+                  {showRegister ? "Register" : "Login"}
+                </h2>
+
+                {showRegister ? (
+                  <form onSubmit={registerUser}>
+                    <div className="mb-5">
+                      <label className="block text-gray-700 font-medium mb-1">Username</label>
+                      <input
+                        id="username"
+                        value={registerForm.username}
+                        onChange={handleRegisterChange}
+                        className="border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 p-3 w-full rounded-md outline-none transition"
+                        required
+                      />
+                    </div>
+                    <div className="mb-8">
+                      <label className="block text-gray-700 font-medium mb-1">Password</label>
+                      <input
+                        id="password"
+                        type="password"
+                        value={registerForm.password}
+                        onChange={handleRegisterChange}
+                        className="border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 p-3 w-full rounded-md outline-none transition"
+                        required
+                      />
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <button
+                        type="button"
+                        onClick={() => setShowRegister(false)}
+                        className="text-blue-600 hover:underline"
+                      >
+                        Already have an account? Login
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+                      >
+                        Register
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <form onSubmit={loginUser}>
+                    <div className="mb-5">
+                      <label className="block text-gray-700 font-medium mb-1">Username</label>
+                      <input
+                        id="username"
+                        value={loginForm.username}
+                        onChange={handleLoginChange}
+                        className="border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 p-3 w-full rounded-md outline-none transition"
+                        required
+                      />
+                    </div>
+                    <div className="mb-8">
+                      <label className="block text-gray-700 font-medium mb-1">Password</label>
+                      <input
+                        id="password"
+                        type="password"
+                        value={loginForm.password}
+                        onChange={handleLoginChange}
+                        className="border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 p-3 w-full rounded-md outline-none transition"
+                        required
+                      />
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <button
+                        type="button"
+                        onClick={() => setShowRegister(true)}
+                        className="text-blue-600 hover:underline"
+                      >
+                        Create Account
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                      >
+                        Login
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+          );
+        }
+
+        // ============ MAIN DASHBOARD ============
+        return (
+          <div className="w-full max-w-6xl bg-white/80 backdrop-blur-lg shadow-xl rounded-2xl p-8 border border-blue-100">
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-3xl font-bold text-gray-700">🚗 Car Inventory</h1>
+              <div className="space-x-3">
+                <button
+                  onClick={openCreateModal}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
+                  Add Car
+                </button>
+                <button
+                  onClick={logout}
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full border border-gray-200 text-sm">
+                <thead className="bg-blue-100 text-gray-700">
+                  <tr>
+                    <th className="p-2 border">#</th>
+                    <th className="p-2 border">License Plate</th>
+                    <th className="p-2 border">Make</th>
+                    <th className="p-2 border">Model</th>
+                    <th className="p-2 border">Year</th>
+                    <th className="p-2 border">Color</th>
+                    <th className="p-2 border">Body Type</th>
+                    <th className="p-2 border">Engine Type</th>
+                    <th className="p-2 border">Transmission</th>
+                    <th className="p-2 border">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cars.map((car, index) => (
+                    <tr key={car.id} className="text-center hover:bg-blue-50 transition">
+                      <td className="border p-2">{index + 1}</td>
+                      <td className="border p-2">{car.licensePlateNumber}</td>
+                      <td className="border p-2">{car.make}</td>
+                      <td className="border p-2">{car.model}</td>
+                      <td className="border p-2">{car.year}</td>
+                      <td className="border p-2">{car.color}</td>
+                      <td className="border p-2">{car.bodyType}</td>
+                      <td className="border p-2">{car.engineType}</td>
+                      <td className="border p-2">{car.transmission}</td>
+                      <td className="border p-2 space-x-2">
+                        <button
+                          onClick={() => openEditModal(car)}
+                          className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => deleteCar(car.id)}
+                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {showModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-10">
+                <div className="bg-white rounded-xl shadow-lg w-96 p-6">
+                  <h2 className="text-xl font-semibold mb-4 text-gray-700">
+                    {editingCar ? "Edit Car" : "Add Car"}
+                  </h2>
+                  <form onSubmit={saveCar}>
+                    {[
+                      ["licensePlateNumber", "License Plate Number"],
+                      ["make", "Make"],
+                      ["model", "Model"],
+                      ["year", "Year", "number"],
+                      ["color", "Color"],
+                      ["bodyType", "Body Type"],
+                      ["engineType", "Engine Type"],
+                      ["transmission", "Transmission"]
+                    ].map(([id, label, type = "text"]) => (
+                      <div className="mb-2" key={id}>
+                        <label className="block text-gray-700">{label}</label>
+                        <input
+                          id={id}
+                          type={type}
+                          value={form[id]}
+                          onChange={handleChange}
+                          className="border p-2 w-full rounded"
+                          required
+                        />
+                      </div>
+                    ))}
+                    <div className="flex justify-end mt-4 space-x-2">
+                      <button
+                        type="button"
+                        onClick={closeModal}
+                        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
 </html>
